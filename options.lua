@@ -6,7 +6,22 @@ return {
     number = true, -- sets vim.opt.number
     spell = false, -- sets vim.opt.spell
     signcolumn = "auto", -- sets vim.opt.signcolumn to auto
-    wrap = false, -- sets vim.opt.wrap
+    wrap = true, -- sets vim.opt.wrap
+    mouse = "c", -- disable mouse
+    ruler = true,
+    incsearch = true,
+    showmatch = true,
+    hidden = true,
+    hlsearch = true,
+    foldmethod = "indent",
+    foldlevelstart = 20,
+    swapfile = false,
+    autoread = true,
+    splitbelow = true,
+    splitright = true,
+    compatible = false,
+    backspace = "indent,eol,start",
+    filetype = "off",
   },
   g = {
     mapleader = " ", -- sets vim.g.mapleader

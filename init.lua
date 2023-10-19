@@ -33,10 +33,10 @@ return {
       format_on_save = {
         enabled = true, -- enable or disable format on save globally
         allow_filetypes = { -- enable format on save for specified filetypes only
-          -- "go",
+          "go",
         },
         ignore_filetypes = { -- disable format on save for specified filetypes
-          -- "python",
+          "python",
         },
       },
       disabled = { -- disable formatting capabilities for the listed language servers
@@ -81,5 +81,66 @@ return {
     --     ["~/%.config/foo/.*"] = "fooscript",
     --   },
     -- }
+    local map = vim.keymap.set
+    local set = vim.opt
+
+    -- Set options
+    set.relativenumber = false
+
+    -- Set key bindings
+    map("n", "<C-J>", "<C-W><C-J>", {noremap = true, silent = false})
+    map("n", "<C-K>", "<C-W><C-K>", {noremap = true, silent = false})
+    map("n", "<C-L>", "<C-W><C-L>", {noremap = true, silent = false})
+    map("n", "<C-H>", "<C-W><C-H>", {noremap = true, silent = false})
+
+    map("c", "W<CR>", "w<CR>", {noremap = false, silent = false})
+    map("c", "Wq<CR>", "wq<CR>", {noremap = false, silent = false})
+    map("c", "Q<CR>", "q<CR>", {noremap = false, silent = false})
+    map("c", "Qa<CR>", "qa<CR>", {noremap = false, silent = false})
+
+    map("c", "w!!", "w !sudo tee % > /dev/null", {noremap = false, silent = false})
+
+    map("n", "Q", "<op>", {noremap = true, silent = false})
+    map("n", "<C-G>", ":noh<return><esc>", {noremap = true, silent = false})
+
+    -- Set autocommands
+    vim.api.nvim_create_augroup("packer_conf", {})
+    vim.api.nvim_create_autocmd("VimEnter", {
+      desc = "vim entry commands",
+      group = "packer_conf",
+      pattern = "*",
+      command = "Neotree",
+    })
+    vim.api.nvim_create_autocmd("Filetype", {
+      desc = "set python formatting",
+      group = "packer_conf",
+      pattern = "python",
+      command = "setl et ts=4 sw=4"
+    })
+    vim.api.nvim_create_autocmd("Filetype", {
+      desc = "set shellscript formatting",
+      group = "packer_conf",
+      pattern = "sh",
+      command = "setl et ts=2 sw=2"
+    })
+    vim.api.nvim_create_autocmd("Filetype", {
+      desc = "set config file formatting",
+      group = "packer_conf",
+      pattern = "{coffee,groovy,elm,dockerfile}",
+      command = "setl textwidth=80 softtabstop=2 shiftwidth=2 tabstop=2 expandtab colorcolumn=80"
+    })
+    vim.api.nvim_create_autocmd("Filetype", {
+      desc = "set make formatting",
+      group = "packer_conf",
+      pattern = "make",
+      command = "setl et"
+    })
+
+    vim.api.nvim_create_autocmd("BufReadPost", {
+      desc = "Sync packer after modifying plugins.lua",
+      group = "packer_conf",
+      pattern = "*.cuh",
+      command = "set filetype=c",
+    })
   end,
 }
